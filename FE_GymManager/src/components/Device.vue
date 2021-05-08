@@ -1,5 +1,6 @@
 <template>
 <div>
+    
     <SupplierAdd v-if="isShowAdd" @toggle-list="toggleList()" :check="6" @reload-page-device="reloadAddDevice()" />
     <SupplierEdit v-if="isShowEdit" :supplierItem="supplierChose"  @toggle-list="toggleList()"  :check="6" @reload-edit-device="reloadUpdate()"/>
     <div class="container-xl" v-if="isShowList">
@@ -7,15 +8,24 @@
             <div class="table-wrapper">
                 <div class="table-title">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <h2 >Manage <b>Device</b></h2>
+                            
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="browser-default custom-select " v-model="fillterSelected" aria-placeholder="fillter">
+                                <option v-for="item in listStatus" :key="item.id" :value="item.id">{{item.name}}</option>   
+                            </select>
                         </div>
                         <div class="col-sm-6">
+                            
                             <a @click="changIsShowAdd()" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Device</span></a>
                             <input  class="form-group search" type="text" placeholder="search" v-model="inputSearch" @keyup="searchItem" >
                         </div>
+                        
                     </div>
                 </div>
+                
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -71,6 +81,7 @@ import {
 } from 'vuex'
 import SupplierAdd from './SupplierAdd'
 import SupplierEdit from './SupplierEdit'
+import StatusList from '../api/StatusDevice'
 export default {
     computed: {
         ...mapState({
@@ -90,12 +101,14 @@ export default {
             supplierChose:null,
             listSp :[],
             inputSearch:'',
-            currentPage:1
+            currentPage:1,
+            fillterSelected :null,
+            listStatus :null
         }
     },
     methods: {
-        ...mapActions('device', ['getSupplier','deleteSupplier','getByPage']),
-        ...mapMutations('device',['findByName']),
+        ...mapActions('device', ['getSupplier','deleteSupplier','getByPage','fillterByStatus']),
+        ...mapMutations('device',['findByName','FILLTER']),
         changIsShowAdd() {
             this.isShowAdd = !this.isShowAdd
             this.isShowEdit = false,
@@ -125,10 +138,21 @@ export default {
             this.getByPage(this.currentPage);
         },reloadUpdate(){
             this.getByPage(this.currentPage);
+        },
+        async getAllListStatus(){
+            let listStatus = await StatusList.getAll();
+            this.listStatus = listStatus.data;
+        },
+        async getChange(){
+            await this.getSupplier();
+            await this.FILLTER(this.fillterSelected);
         }
+
+
     },
     created() {
         this.getByPage(this.currentPage);
+        this.getAllListStatus();
     },
     watch:{
         inputSearch:function(){
@@ -140,6 +164,11 @@ export default {
         currentPage:function(){
             console.log(this.currentPage)
             this.getByPage(this.currentPage);
+        },
+        fillterSelected :function(){
+            // await this.getSupplier();
+            this.fillterByStatus(this.fillterSelected);
+            
         }
     }
 }

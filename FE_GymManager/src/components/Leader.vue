@@ -24,6 +24,11 @@
                 </li>
 
             </router-link>
+             <router-link to="/change-password" class="active">
+                <li>
+                    <a href="#"><span class="fa fa-cog mr-3"></span> Change Password</a>
+                </li>
+            </router-link>
             <li>
                 <a @click="logout"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
             </li>

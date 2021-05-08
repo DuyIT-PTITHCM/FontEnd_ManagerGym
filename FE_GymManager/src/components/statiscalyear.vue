@@ -89,3 +89,13 @@ export default {
 
 }
 </script>
+<style>
+.a-link {
+    /* color: blue !important; */
+    /* font-style: italic; */
+    text-decoration: none;
+    font-size: 17px;
+    font-style: normal;
+    color: #c69696;
+}
+</style>

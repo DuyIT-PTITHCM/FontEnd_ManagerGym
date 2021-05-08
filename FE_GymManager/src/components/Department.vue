@@ -27,9 +27,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item,index) of supplierList" :key="item.id">
+                        <tr v-for="(item,index) of supplierList" :key="item.id" >
                             <td></td>
-                            <td>{{item.name}}</td>
+                            <td  @click="showDetailDevice(item.id)">{{item.name}}</td>
                             <td></td>
                             <td>{{(item.user)?item.user.name:'chưa có'}}</td>
                             <td>
@@ -126,6 +126,9 @@ export default {
         reloadAdd(){
             alert('insert success');
             this.getByPage(this.currentPage);
+        },
+        showDetailDevice(idCC){
+           this.$router.push({ name: 'detail_partment', params: { id: idCC } })
         }
     },
     created() {

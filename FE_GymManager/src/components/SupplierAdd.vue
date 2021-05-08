@@ -94,6 +94,7 @@ import SupplierApi from '../api/Supplier'
 import User from '../api/user'
 import Popup from './Popup'
 import Status from '../api/StatusDevice'
+import Helper from '../checkPhoneNumber'
 export default {
     props: ['check', 'modal','isservice'],
     computed:{
@@ -148,30 +149,67 @@ export default {
         },
         AddSupplierFrom(data) {
             if (this.check == 1) {
-                this.addSupplier(data);
+                let phone = data.phone;
+                if(phone !=''){
+                    if(Helper.checkPhoneNumber(phone)){
+                        this.addSupplier(data);
+                         this.$emit('toggle-list')
+                    }else{
+                        alert('phone not validate')
+                    }
+                }
             } else if (this.check == 2) {
-                this.addSales(data)
+                let phone = data.phone;
+                if(phone !=''){
+                    if(Helper.checkPhoneNumber(phone)){
+                       this.addSales(data)
+                        this.$emit('toggle-list')
+                    }else{
+                        alert('phone not validate')
+                    }
+                }
+               
             } else if (this.check == 3) {
-                this.addPartner(data)
+                let phone = data.phone;
+                if(phone !=''){
+                    if(Helper.checkPhoneNumber(phone)){
+                       this.addPartner(data)
+                        this.$emit('toggle-list')
+                    }else{
+                        alert('phone not validate')
+                    }
+                }   
             } else if (this.check == 4) {
                 this.addTypeMachine(data)
             } else if (this.check == 5) {
-                this.addUser(data);
-                this.$emit('reload-page');
+                let phone = data.phone;
+                if(phone !=''){
+                    if(Helper.checkPhoneNumber(phone)){
+                        this.addUser(data);
+                        this.$emit('reload-page');
+                         this.$emit('toggle-list')
+                    }else{
+                        alert('phone not validate')
+                    }
+                }  
+                
             }
             else if(this.check == 7){
                 this.addDepartment(data);
                 this.$emit('reload-page-add');
+                 this.$emit('toggle-list')
                 
             }else if(this.check == 6){
                 this.addDevice(data);
                 this.$emit('reload-page-device');
+                 this.$emit('toggle-list')
             }
             else if(this.isservice==1){
               this.addService(data);
+               this.$emit('toggle-list')
 
             }
-             this.$emit('toggle-list')
+            
         },
         takeDataRole() {
             Role.get().then((response) => {

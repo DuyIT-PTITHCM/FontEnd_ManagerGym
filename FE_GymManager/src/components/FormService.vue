@@ -125,11 +125,11 @@ export default {
         },
         AddPSD(data) {
             PSD.store(data).then(() => {
-                    console.log(data)
-                    alert('Thêm Thành Công')
+                 alert('Thêm Thành Công')
+                 this.$router.push({ path: 'service' })
+                
                 })
                 .catch(() => {
-                      console.log(data)
                     alert('Thêm Thất Bại ')
                 })
         }
@@ -143,7 +143,7 @@ export default {
     watch: {
         range: {
             handler: function () {
-                this.partnerDevice.enddate  =  this.range.getFullYear() +'-'+ this.range.getMonth()+'-'+this.range.getDate() +' 00:00:00';
+                this.partnerDevice.enddate  =  this.range.getFullYear() +'-'+ (this.range.getMonth()+1)+'-'+this.range.getDate() +' 00:00:00';
             },
             deep: true
         }
